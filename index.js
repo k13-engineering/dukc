@@ -16,9 +16,17 @@ const workdir = path.resolve(tmpdir.name);
 const args = minimist(process.argv);
 
 const kjsdir = ".";
-const outfile = path.resolve(args.o || args.output || "a.bin");
+const outfileRaw = args.o || args.output || "a.bin";
+const outfile = path.resolve(outfileRaw);
 
-if (!(args.v || args.verbose)) {
+console.error = function (msg) {
+  process.stderr.write(msg + "\n");
+};
+console.warn = console.error;
+
+if (args.v || args.verbose) {
+  console.log = console.error;
+} else {
   console.log = function () {};
 }
 
@@ -44,12 +52,16 @@ process.nextTick(async() => {
 
     console.log(`executing compile worker to generate output file ${outfile} from ${files[0]}`);
 
-    await exec(`${newCompileBinary} ${files[0]} ${outfile}`);
+    const temporaryOutputFile = path.resolve(workdir, "out.temp");
 
-    // await compile(path.resolve(files[0]), path.resolve(workdir, "main.js"));
-    // 
-    // await exec(`ld -r -b binary main.js -o data.o`, { "cwd": workdir });
-    // await exec(`musl-clang -g -Os -static ${path.resolve(kjsdir, "rt.c")} ${path.resolve(workdir, "data.o")} ${path.resolve(kjsdir, "..", "libkjs", "build", "linux-x86_64", "libkjs.a")} -o ${outfile}`);
+    await exec(`${newCompileBinary} ${files[0]} ${temporaryOutputFile}`);
+    
+    await new Promise((resolve, reject) => {
+      fs.createReadStream(temporaryOutputFile)
+        .pipe(outfileRaw === "-" ? process.stdout : fs.createWriteStream(outfile))
+        .on("error", (error) => reject(error))
+        .on("end", () => resolve());
+    });
   } catch (ex) {
     console.error(ex);
     process.exitCode = -1;
