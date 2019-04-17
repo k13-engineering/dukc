@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "duktape (JavaScript engine) bytecode compiler",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/k13-engineering/dukc.git"
