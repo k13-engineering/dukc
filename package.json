@@ -1,10 +1,13 @@
 {
   "name": "dukc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "duktape (JavaScript engine) bytecode compiler",
   "main": "index.js",
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha"
+  },
+  "bin": {
+    "dukc": "./index.js"
   },
   "repository": {
     "type": "git",
