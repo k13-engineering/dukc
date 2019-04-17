@@ -1,0 +1,27 @@
+{
+  "name": "dukc",
+  "version": "0.0.1",
+  "description": "duktape (JavaScript engine) bytecode compiler",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k13-engineering/dukc.git"
+  },
+  "keywords": [
+    "duktape",
+    "bytecode"
+  ],
+  "author": "Simon Kadisch",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/k13-engineering/dukc/issues"
+  },
+  "homepage": "https://github.com/k13-engineering/dukc#readme",
+  "dependencies": {
+    "fs-extra": "^7.0.1",
+    "minimist": "^1.2.0",
+    "tmp": "^0.1.0"
+  }
+}
